@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inbox - {{ username }}</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: #1f1f1f;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    header h1 {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    .message {
+      background: #2a2a2a;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .preview {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .full-content {
+      display: none;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 0.5rem;
+    }
+    form {
+      margin-top: 2rem;
+      background: #1c1c1c;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    textarea, input, select {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1rem;
+      background: #2c2c2c;
+      border: none;
+      color: #eee;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button, .header-btn {
+      padding: 0.7rem 1rem;
+      background: #4af;
+      border: none;
+      color: #eee;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .header-btn {
+      background: #333;
+    }
+    .style-icons {
+      display: flex;
+      gap: 10px;
+      margin-top: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .style-icons span {
+      font-size: 28px;
+      cursor: pointer;
+      color: #888;
+    }
+    .style-icons span.selected {
+      color: #4af;
+    }
+    a.logout {
+      color: #f44;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Welcome, {{ username }}</h1>
+  <div class="header-actions">
+    <button class="header-btn" onclick="location.reload()">🔄 Refresh</button>
+    <a href="/logout" class="logout">Logout</a>
+  </div>
+</header>
+<main>
+  {% if messages|length == 0 %}
+    <p>No messages yet.</p>
+  {% else %}
+    {% for msg in messages %}
+      <div class="message" onclick="toggleMessage(this)">
+        <strong>From:</strong> {{ msg.from_username }} &lt;{{ msg.from_email }}&gt;<br>
+        <strong>Subject:</strong> {{ msg.subject }}<br>
+        <div class="preview markdown" data-raw="{{ msg.preview | escape }}"></div>
+        <div class="full-content markdown" data-raw="{{ msg.full_content | escape }}"></div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form id="sendForm" method="post" action="/send">
+    <input name="to_email" type="email" placeholder="Recipient's Email" required />
+    <input name="subject" type="text" placeholder="Subject" />
+    <textarea name="message" placeholder="Write your message..." required></textarea>
+
+    <div class="style-icons">
+      <span class="material-icons" onclick="applyStyle('bold')">format_bold</span>
+      <span class="material-icons" onclick="applyStyle('italic')">format_italic</span>
+      <span class="material-icons" onclick="applyStyle('underline')">format_underlined</span>
+      <span class="material-icons" onclick="applyStyle('code')">code</span>
+    </div>
+
+    <button type="submit">Send</button>
+  </form>
+</main>
+
+<script>
+marked.setOptions({
+  breaks: true,
+  mangle: false,
+  headerIds: false
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const previews = document.querySelectorAll('.preview');
+  previews.forEach(preview => {
+    const raw = preview.dataset.raw || '';
+    preview.innerHTML = marked.parse(raw);
+    preview.querySelectorAll('a').forEach(link => link.setAttribute('target', '_blank'));
+  });
+});
+
+function toggleMessage(element) {
+  const preview = element.querySelector('.preview');
+  const fullContent = element.querySelector('.full-content');
+
+  if (fullContent.style.display === 'none' || fullContent.style.display === '') {
+    preview.style.display = 'none';
+
+    if (!fullContent.dataset.rendered) {
+      const raw = fullContent.dataset.raw || '';
+      fullContent.innerHTML = marked.parse(raw);
+      fullContent.querySelectorAll('a').forEach(link => link.setAttribute('target', '_blank'));
+      fullContent.dataset.rendered = 'true';
+    }
+
+    fullContent.style.display = 'block';
+  } else {
+    preview.style.display = 'block';
+    fullContent.style.display = 'none';
+  }
+}
+
+function applyStyle(style) {
+  const textarea = document.querySelector('textarea[name="message"]');
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = textarea.value.substring(start, end);
+
+  let before = '', after = '';
+  switch (style) {
+    case 'bold': before = '**'; after = '**'; break;
+    case 'italic': before = '*'; after = '*'; break;
+    case 'underline': before = '__'; after = '__'; break;
+    case 'code': before = '`'; after = '`'; break;
+  }
+
+  const newText = textarea.value.substring(0, start) + before + selectedText + after + textarea.value.substring(end);
+  textarea.value = newText;
+
+  const cursorPos = start + before.length + selectedText.length + after.length;
+  textarea.selectionStart = textarea.selectionEnd = cursorPos;
+  textarea.focus();
+}
+</script>
+</body>
+</html>

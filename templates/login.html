@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><title>Login</title>
+<style>
+  body { background: #121212; color: #eee; font-family: Arial, sans-serif; }
+  form { max-width: 300px; margin: 3rem auto; display: flex; flex-direction: column; gap: 1rem; }
+  input, button { padding: 0.75rem; border-radius: 6px; border: none; }
+  input { background: #222; color: #eee; }
+  button { background: #4af; color: #eee; cursor: pointer; }
+  .error { color: #f44; }
+</style>
+</head>
+<body>
+  <form method="post">
+    <h1>Login</h1>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <input name="username" placeholder="Username" required />
+    <input type="password" name="password" placeholder="Password" required />
+    <button>Login</button>
+    <p>Don't have an account? <a href="/signup" style="color:#4af;">Sign Up</a></p>
+  </form>
+</body>
+</html>
