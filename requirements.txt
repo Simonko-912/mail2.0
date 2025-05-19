@@ -5,3 +5,4 @@ passlib[bcrypt]
 starlette
 markdown2
 uvicorn
+itsdangerous
