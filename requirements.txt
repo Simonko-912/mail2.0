@@ -6,3 +6,5 @@ starlette
 markdown2
 uvicorn
 itsdangerous
+python-multipart
+email-validator
