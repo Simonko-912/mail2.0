@@ -211,10 +211,8 @@ def login(request: Request,
     return RedirectResponse(url="/inbox", status_code=303)
 
 
+import os
+
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",  # Allow external access
-        port=10000,         # Use port 80 (default HTTP)
-        reload=True
-    )
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run("server:app", host="0.0.0.0", port=port, reload=True)
