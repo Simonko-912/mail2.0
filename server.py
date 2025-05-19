@@ -141,8 +141,7 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
     msgs = db.query(Message).filter(Message.to_user_id == current_user.id).all()
     msgs_data = []
     for m in msgs:
-        content_html = markdown2.markdown(m.content)  # parse markdown to HTML
-        # Create a preview snippet of first 8 words (plain text)
+        content_html = markdown2.markdown(m.content)
         preview_words = m.content.split()
         preview = ' '.join(preview_words[:8])
         if len(preview_words) > 8:
@@ -155,13 +154,17 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
             "preview": preview,
             "full_content": content_html
         })
+
+    domain = "mail2-0.onrender.com"  # Your mail domain
     all_users = db.query(User).all()
     return templates.TemplateResponse("inbox.html", {
         "request": request,
         "username": current_user.username,
+        "email_address": f"{current_user.username}@{domain}",
         "messages": msgs_data,
         "all_users": all_users
     })
+
 
 
 @app.post("/send")
