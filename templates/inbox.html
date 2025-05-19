@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <h1>Welcome, {{ username }} — <small style="font-weight:normal; font-size:0.8rem; color:#4af;">Your email: {{ email_address }}</small></h1>
+  <title>Inbox - {{ username }}</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
@@ -125,7 +125,7 @@
 </head>
 <body>
 <header>
-  <h1>Welcome, {{ username }}</h1>
+  <h1>Welcome, {{ username }} — <small style="font-weight:normal; font-size:0.8rem; color:#4af;">Your email: {{ email_address }}</small></h1>
   <div class="header-actions">
     <button class="header-btn" onclick="location.reload()">🔄 Refresh</button>
     <a href="/logout" class="logout">Logout</a>
