@@ -215,6 +215,6 @@ if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="0.0.0.0",  # Allow external access
-        port=80,         # Use port 80 (default HTTP)
+        port=10000,         # Use port 80 (default HTTP)
         reload=True
     )
