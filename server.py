@@ -140,9 +140,16 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
 
     msgs = db.query(Message).filter(Message.to_user_id == current_user.id).all()
     msgs_data = []
+    import base64
+
     for m in msgs:
-        # decode content from base64 before converting markdown
-        decoded_content = base64.b64decode(m.content).decode()
+        # Decode the base64 message content
+        try:
+            decoded_bytes = base64.b64decode(m.content)
+            decoded_content = decoded_bytes.decode('utf-8')
+        except Exception:
+            decoded_content = m.content  # fallback if not base64 encoded
+
         content_html = markdown2.markdown(decoded_content)
         preview_words = decoded_content.split()
         preview = ' '.join(preview_words[:8])
@@ -157,7 +164,7 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
             "full_content": content_html
         })
 
-    domain = "mail2-0.onrender.com"  # Your mail domain
+    domain = "mail2-0.onrender.com"
     all_users = db.query(User).all()
     return templates.TemplateResponse("inbox.html", {
         "request": request,
@@ -166,6 +173,7 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
         "messages": msgs_data,
         "all_users": all_users
     })
+
 
 
 @app.post("/send")
