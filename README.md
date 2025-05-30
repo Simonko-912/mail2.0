@@ -10,11 +10,8 @@
 </p>
 
 # Table of contents.
-- [Overview](#overview)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
+- [Basic Info](#basic-info)
+.... adding in progress
 
 # Basic info
 
