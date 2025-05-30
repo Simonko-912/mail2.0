@@ -3,19 +3,28 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import OAuth2PasswordBearer
+from fastapi import UploadFile, File
+from fastapi.responses import FileResponse
 from passlib.context import CryptContext
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, Session
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware import Middleware
-from starlette.responses import Response
+from starlette.responses import Response|
 import markdown2
 import uvicorn
 import base64
 import os
 
+#-------#
+# SETUP #
+#-------#
+
 DOMAIN = "mail2-0.onrender.com"
+UPLOAD_DIR = "uploads"
+
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 app = FastAPI(middleware=[Middleware(SessionMiddleware, secret_key="SUPERSECRET123")])
 
@@ -27,6 +36,10 @@ SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+#-------#
+# START #
+#-------#
 
 # Models
 class User(Base):
@@ -88,7 +101,9 @@ def get_current_user(request: Request, db: Session = Depends(get_db)):
     user = get_user_by_username(db, username)
     return user
 
-# Routes
+#--------#
+# ROUTES #
+#--------#
 
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request, current_user: User = Depends(get_current_user)):
@@ -225,7 +240,25 @@ def login(request: Request,
     request.session["user"] = username
     return RedirectResponse(url="/inbox", status_code=303)
 
+@app.post("/upload")
+def upload_file(file: UploadFile = File(...), current_user: User = Depends(get_current_user)):
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Not logged in")
 
+    filename = f"{current_user.id}_{file.filename}"
+    file_path = os.path.join(UPLOAD_DIR, filename)
+    with open(file_path, "wb") as f:
+        f.write(file.file.read())
+    return {"filename": filename, "url": f"/uploads/{filename}"}
+
+@app.get("/uploads/{filename}")
+def get_uploaded_file(filename: str):
+    return FileResponse(os.path.join(UPLOAD_DIR, filename))
+
+
+#-----------#
+# APP START #
+#-----------#
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
