@@ -12,6 +12,8 @@ from starlette.middleware import Middleware
 from starlette.responses import Response
 import markdown2
 import uvicorn
+import base64
+import os
 
 app = FastAPI(middleware=[Middleware(SessionMiddleware, secret_key="SUPERSECRET123")])
 
@@ -223,7 +225,6 @@ def login(request: Request,
     return RedirectResponse(url="/inbox", status_code=303)
 
 
-import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
