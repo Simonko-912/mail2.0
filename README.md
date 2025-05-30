@@ -11,6 +11,9 @@
 
 # Table of contents.
 - [Basic Info](#basic-info)
+- [How to set up?](#how-to-set-up)
+- [How to Pick a Mail2.0 Address?](#how-to-pick-a-mail20-address)
+# How to pick a mail2.0 adress?
 .... adding in progress
 
 # Basic info
@@ -60,5 +63,5 @@ Edit the port to your needs in `server.py` (In the last few lines, defult at 0.0
 python3 server.py
 ```
 
-# How  to pick a mail2.0 adress?
+# How to Pick a Mail2.0 Address?
 Just write `any@ip` any you can have any like `bob@ip` and the ip is the ip or domain of a server so example `bob@example.com` or `bob@111.111.11.111`
