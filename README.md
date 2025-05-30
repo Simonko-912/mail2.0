@@ -27,6 +27,7 @@ The `runtime.txt` is the version of python that I tested and works. The `test.db
   "message": "QW5kIHRoaXMgaXMgZW5jcmlwdGVkLg==" #This says "And this is encripted."
 }
 ```
+(It is not "encription" look at [Notes](#notes) for more)
 
 The encription is just a simple Base64 for simplicity. (Still you are probably gonna use HTTPS what has encription built in)
 To see all releases go to [https://github.com/Simonko-912/mail2.0/releases](https://github.com/Simonko-912/mail2.0/releases)
