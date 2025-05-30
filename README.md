@@ -9,6 +9,15 @@
     <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status">
 </p>
 
+# Table of contents.
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+
+# Basic info
+
 **Mail 2.0** is a simple mail service that uses Python for the backend and HTML for frontend. All required things are in the `requirements.txt`. 
 The `runtime.txt` is the version of python that I tested and works. The `test.db` that shows after runing is the database of the server. By deleting you delete all accounts and mail. It was inspired by [Gmail](https://gmail.com/) and [Proton mail](https://mail.proton.me/). The messages are sent using JSON in this format:
 
