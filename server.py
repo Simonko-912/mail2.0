@@ -141,8 +141,10 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
     msgs = db.query(Message).filter(Message.to_user_id == current_user.id).all()
     msgs_data = []
     for m in msgs:
-        content_html = markdown2.markdown(m.content)
-        preview_words = m.content.split()
+        # decode content from base64 before converting markdown
+        decoded_content = base64.b64decode(m.content).decode()
+        content_html = markdown2.markdown(decoded_content)
+        preview_words = decoded_content.split()
         preview = ' '.join(preview_words[:8])
         if len(preview_words) > 8:
             preview += '...'
@@ -165,8 +167,6 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
         "all_users": all_users
     })
 
-
-
 @app.post("/send")
 def send_message(
     request: Request,
@@ -183,18 +183,18 @@ def send_message(
     if not recipient:
         raise HTTPException(status_code=404, detail="Recipient not found")
 
+    # encode message content in base64 before saving
+    encoded_message = base64.b64encode(message.encode()).decode()
+
     msg = Message(
         from_user_id=current_user.id,
         to_user_id=recipient.id,
         subject=subject or "No Subject",
-        content=message
+        content=encoded_message
     )
     db.add(msg)
     db.commit()
     return RedirectResponse("/inbox", status_code=303)
-
-
-
 
 
 @app.get("/login", response_class=HTMLResponse)
