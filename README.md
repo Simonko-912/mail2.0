@@ -13,8 +13,6 @@
 - [Basic Info](#basic-info)
 - [How to set up?](#how-to-set-up)
 - [How to Pick a Mail2.0 Address?](#how-to-pick-a-mail20-address)
-# How to pick a mail2.0 adress?
-.... adding in progress
 
 # Basic info
 
