@@ -22,5 +22,36 @@ The `runtime.txt` is the version of python that I tested and works. The `test.db
 
 The encription is just a simple Base64 for simplicity. (Still you are probably gonna use HTTPS what has encription built in)
 
-# How to pick a mail2.0 adress?
+# How to set up?
+
+First clone mail2.0
+
+```
+git clone https://github.com/Simonko-912/mail2.0.git
+cd mail2.0
+```
+
+Optional: Set up venv
+
+```
+python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+```
+
+Download Requirements
+
+```
+pip install -r requirements.txt
+```
+
+Edit the port to your needs in `server.py` (In the last few lines, defult at 0.0.0.0 at port 10000) and then pick a domain or ip that you want your users to use in the `DOMAIN` variable.
+
+
+Lastly Run
+
+```
+python3 server.py
+```
+
+# How  to pick a mail2.0 adress?
 Just write `any@ip` any you can have any like `bob@ip` and the ip is the ip or domain of a server so example `bob@example.com` or `bob@111.111.11.111`
