@@ -167,6 +167,7 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
         "all_users": all_users
     })
 
+
 @app.post("/send")
 def send_message(
     request: Request,
@@ -183,14 +184,14 @@ def send_message(
     if not recipient:
         raise HTTPException(status_code=404, detail="Recipient not found")
 
-    # encode message content in base64 before saving
-    encoded_message = base64.b64encode(message.encode()).decode()
+    # Encode the message content in base64 before saving
+    encoded_message = base64.b64encode(message.encode('utf-8')).decode('utf-8')
 
     msg = Message(
         from_user_id=current_user.id,
         to_user_id=recipient.id,
         subject=subject or "No Subject",
-        content=encoded_message
+        content=encoded_message  # Save the encoded string
     )
     db.add(msg)
     db.commit()
