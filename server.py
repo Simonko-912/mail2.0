@@ -11,7 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, Session
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware import Middleware
-from starlette.responses import Response|
+from starlette.responses import Response
 import markdown2
 import uvicorn
 import base64
