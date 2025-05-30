@@ -24,30 +24,31 @@ The encription is just a simple Base64 for simplicity. (Still you are probably g
 
 # How to set up?
 
-First clone mail2.0
+## First clone mail2.0
 
 ```
 git clone https://github.com/Simonko-912/mail2.0.git
 cd mail2.0
 ```
 
-Optional: Set up venv
+### Optional: Set up venv
 
 ```
 python -m venv venv
 source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
 ```
 
-Download Requirements
+## Download Requirements
 
 ```
 pip install -r requirements.txt
 ```
 
+## Edit the port
 Edit the port to your needs in `server.py` (In the last few lines, defult at 0.0.0.0 at port 10000) and then pick a domain or ip that you want your users to use in the `DOMAIN` variable.
 
 
-Lastly Run
+## Lastly Run
 
 ```
 python3 server.py
