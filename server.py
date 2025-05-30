@@ -15,6 +15,8 @@ import uvicorn
 import base64
 import os
 
+DOMAIN = "mail2-0.onrender.com"
+
 app = FastAPI(middleware=[Middleware(SessionMiddleware, secret_key="SUPERSECRET123")])
 
 templates = Jinja2Templates(directory="templates")
@@ -166,12 +168,11 @@ def inbox(request: Request, db: Session = Depends(get_db), current_user: User = 
             "full_content": content_html
         })
 
-    domain = "mail2-0.onrender.com"
     all_users = db.query(User).all()
     return templates.TemplateResponse("inbox.html", {
         "request": request,
         "username": current_user.username,
-        "email_address": f"{current_user.username}@{domain}",
+        "email_address": f"{current_user.username}@{DOMAIN}",
         "messages": msgs_data,
         "all_users": all_users
     })
