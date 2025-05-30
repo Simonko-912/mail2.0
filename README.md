@@ -28,7 +28,7 @@ The `runtime.txt` is the version of python that I tested and works. The `test.db
 ```
 
 The encription is just a simple Base64 for simplicity. (Still you are probably gonna use HTTPS what has encription built in)
-
+To see all releases go to [https://github.com/Simonko-912/mail2.0/releases](https://github.com/Simonko-912/mail2.0/releases)
 # How to set up?
 
 ## First clone mail2.0
@@ -63,3 +63,4 @@ python3 server.py
 
 # How to Pick a Mail2.0 Address?
 Just write `any@ip` any you can have any like `bob@ip` and the ip is the ip or domain of a server so example `bob@example.com` or `bob@111.111.11.111`
+
