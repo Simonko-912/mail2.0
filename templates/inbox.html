@@ -149,15 +149,18 @@
     <input name="to_email" type="email" placeholder="Recipient's Email" required />
     <input name="subject" type="text" placeholder="Subject" />
     <textarea name="message" placeholder="Write your message..." required></textarea>
-
+    
     <div class="style-icons">
       <span class="material-icons" onclick="applyStyle('bold')">format_bold</span>
       <span class="material-icons" onclick="applyStyle('italic')">format_italic</span>
       <span class="material-icons" onclick="applyStyle('underline')">format_underlined</span>
       <span class="material-icons" onclick="applyStyle('code')">code</span>
+      
     </div>
 
     <button type="submit">Send</button>
+    <input type="file" id="fileUpload" style="display:none;" />
+    <button type="button" onclick="document.getElementById('fileUpload').click()">Upload File</button>
   </form>
 </main>
 
@@ -220,5 +223,31 @@ function applyStyle(style) {
   textarea.focus();
 }
 </script>
+
+<script>
+document.getElementById("fileUpload").addEventListener("change", async function () {
+  const file = this.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("/upload", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  const url = data.url;
+
+  const textarea = document.querySelector('textarea[name="message"]');
+  if (file.type.startsWith("image/") || file.type.endsWith("gif")) {
+    textarea.value += `\n![uploaded](${url})\n`;
+  } else {
+    textarea.value += `\n[Download ${file.name}](${url})\n`;
+  }
+});
+</script>
+
 </body>
 </html>
