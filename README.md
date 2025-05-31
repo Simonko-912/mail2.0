@@ -1,16 +1,4 @@
-<p align="center"> 
-    <img src="https://img.shields.io/github/issues/Simonko-912/mail2.0" alt="Issues">
-    <img src="https://img.shields.io/github/forks/Simonko-912/mail2.0" alt="Forks">
-    <img src="https://img.shields.io/github/stars/Simonko-912/mail2.0" alt="Stars">
-    <img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License (GPLv3)">
-    <img src="https://img.shields.io/badge/version-1.0.1-blue" alt="Version">
-    <img src="https://img.shields.io/badge/contributors-0-orange" alt="Contributors">
-    <img src="https://img.shields.io/github/downloads/Simonko-912/mail2.0/total" alt="Downloads">
-    <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status">
-</p>
-
-
-
+# This is the Dev branch, go to the Main branch for stable releases.
 
 # Table of contents.
 - [Basic Info](#basic-info)
